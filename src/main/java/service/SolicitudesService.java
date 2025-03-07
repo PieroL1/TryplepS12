@@ -30,18 +30,18 @@ public class SolicitudesService {
         return solicitudesDAO.registrarSolicitud(solicitud);
     }
 
-    // Inicializar una solicitud con el solicitante (Jefe de Proyecto) y el evaluador (Jefe de Sistemas)
+    // Inicializar una solicitud con el solicitante (Jefe de Sistemas) y el evaluador (Jefe de Proyecto)
     public SolicitudPersonal iniciarSolicitud(int idSolicitante) {
         SolicitudPersonal solicitud = new SolicitudPersonal();
 
-        // Obtener solicitante (Jefe de Proyecto)
+        // Obtener solicitante (Jefe de Sistemas)
         Usuarios solicitante = usuariosDAO.obtenerUsuario(String.valueOf(idSolicitante));
         if (solicitante != null) {
             solicitud.setIdSolicitante(Integer.parseInt(solicitante.getId())); // CORREGIDO
         }
 
-        // Obtener evaluador (Jefe de Sistemas)
-        Usuarios evaluador = usuariosDAO.obtenerUsuarioPorCargo("jefe_sistemas");
+        // Obtener evaluador (Jefe de Proyecto)
+        Usuarios evaluador = usuariosDAO.obtenerUsuarioPorCargo("jefe_proyecto");
         if (evaluador != null) {
             solicitud.setIdEvaluador(Integer.parseInt(evaluador.getId())); // CORREGIDO
         }

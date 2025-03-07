@@ -19,8 +19,7 @@ public class SolicitudController {
         return solicitudService.obtenerPerfiles();
     }
     
-    public SolicitudPersonal iniciarSolicitud(String nroRegistroSolicitante) {
-        int idSolicitante = Integer.parseInt(nroRegistroSolicitante); // CORREGIDO
+    public SolicitudPersonal iniciarSolicitud(int idSolicitante) {
         solicitudActual = solicitudService.iniciarSolicitud(idSolicitante);
         return solicitudActual;
     }
@@ -36,8 +35,7 @@ public class SolicitudController {
     }
 
     
-    public List<SolicitudPersonal> consultarSolicitudes(String nroRegistro) {
-        int idSolicitante = Integer.parseInt(nroRegistro); // CORREGIDO
+    public List<SolicitudPersonal> consultarSolicitudes(int idSolicitante) {
         return solicitudService.consultarSolicitudesPorSolicitante(idSolicitante);
     }
     

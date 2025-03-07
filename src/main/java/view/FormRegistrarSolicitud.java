@@ -12,6 +12,9 @@ import java.util.List;
 
 public class FormRegistrarSolicitud extends JFrame {
     private JComboBox<Usuarios> cmbSolicitantes;
+    private JTextField txtIdSolicitante;
+    private JTextField txtNombreSolicitante;
+    private JTextField txtCargoSolicitante;
     private JTextField txtIdEvaluador;
     private JTextField txtNombreEvaluador;
     private JTextField txtCargoEvaluador;
@@ -43,34 +46,17 @@ public class FormRegistrarSolicitud extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
 
-        // Datos del Solicitante (Jefe de Proyecto)
+        // PRIMERO: DATOS DEL EVALUADOR (Jefe de Proyecto)
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panelDatos.add(new JLabel("DATOS DEL SOLICITANTE:"), gbc);
+        panelDatos.add(new JLabel("DATOS DEL EVALUADOR:"), gbc);
+
+        // Get a project manager user for evaluator
+        Usuarios evaluador = controller.obtenerEvaluador("jefe_proyecto");
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panelDatos.add(new JLabel("Seleccionar Jefe de Proyecto:"), gbc);
-
-        cmbSolicitantes = new JComboBox<>();
-        List<Usuarios> jefesProyecto = controller.obtenerJefesDeProyecto();
-        for (Usuarios jefe : jefesProyecto) {
-            cmbSolicitantes.addItem(jefe);
-        }
-        gbc.gridx = 1;
-        gbc.gridwidth = 3;
-        panelDatos.add(cmbSolicitantes, gbc);
-
-        // Datos del Evaluador (Jefe de Sistemas)
-        Usuarios evaluador = controller.obtenerEvaluador("jefe_sistemas");
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panelDatos.add(new JLabel("DATOS DEL EVALUADOR:"), gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        panelDatos.add(new JLabel("ID:"), gbc);
+        panelDatos.add(new JLabel("Nro. Registro:"), gbc);
 
         txtIdEvaluador = new JTextField(10);
         txtIdEvaluador.setEditable(false);
@@ -92,9 +78,46 @@ public class FormRegistrarSolicitud extends JFrame {
 
         txtCargoEvaluador = new JTextField(15);
         txtCargoEvaluador.setEditable(false);
-        txtCargoEvaluador.setText(evaluador != null ? evaluador.getCargo() : "");
+        txtCargoEvaluador.setText("Jefe de Proyecto"); // Fixed text for cargo
         gbc.gridx = 5;
         panelDatos.add(txtCargoEvaluador, gbc);
+
+        // SEGUNDO: DATOS DEL SOLICITANTE (Jefe de Sistemas)
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        panelDatos.add(new JLabel("DATOS DEL SOLICITANTE:"), gbc);
+
+        // Get a systems manager user for solicitante
+        Usuarios solicitante = controller.obtenerEvaluador("jefe_sistemas");
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panelDatos.add(new JLabel("Nro. Registro:"), gbc);
+
+        txtIdSolicitante = new JTextField(10);
+        txtIdSolicitante.setEditable(false);
+        txtIdSolicitante.setText(solicitante != null ? String.valueOf(solicitante.getId()) : "");
+        gbc.gridx = 1;
+        panelDatos.add(txtIdSolicitante, gbc);
+
+        gbc.gridx = 2;
+        panelDatos.add(new JLabel("Nombre:"), gbc);
+
+        txtNombreSolicitante = new JTextField(20);
+        txtNombreSolicitante.setEditable(false);
+        txtNombreSolicitante.setText(solicitante != null ? solicitante.getNombre() : "");
+        gbc.gridx = 3;
+        panelDatos.add(txtNombreSolicitante, gbc);
+
+        gbc.gridx = 4;
+        panelDatos.add(new JLabel("Cargo:"), gbc);
+
+        txtCargoSolicitante = new JTextField(15);
+        txtCargoSolicitante.setEditable(false);
+        txtCargoSolicitante.setText("Jefe de Sistemas"); // Fixed text for cargo
+        gbc.gridx = 5;
+        panelDatos.add(txtCargoSolicitante, gbc);
 
         // Panel de selección de perfiles
         JPanel panelPerfiles = new JPanel(new GridBagLayout());
@@ -197,21 +220,26 @@ public class FormRegistrarSolicitud extends JFrame {
     }
 
     private void registrarSolicitud() {
-        Usuarios solicitanteSeleccionado = (Usuarios) cmbSolicitantes.getSelectedItem();
-
-        if (solicitanteSeleccionado == null) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Jefe de Proyecto", "Validación", JOptionPane.WARNING_MESSAGE);
+        String idSolicitanteStr = txtIdSolicitante.getText().trim();
+        
+        if (idSolicitanteStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un ID de Jefe de Sistemas", "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-        solicitudActual = controller.iniciarSolicitud(solicitanteSeleccionado.getId());
-        String numeroSolicitud = controller.registrarSolicitud();
-
-        if (numeroSolicitud != null) {
-            JOptionPane.showMessageDialog(this, "Nro. de Solicitud " + numeroSolicitud, "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al registrar la solicitud", "Error", JOptionPane.ERROR_MESSAGE);
+        
+        try {
+            int idSolicitante = Integer.parseInt(idSolicitanteStr);
+            solicitudActual = controller.iniciarSolicitud(idSolicitante);
+            String numeroSolicitud = controller.registrarSolicitud();
+            
+            if (numeroSolicitud != null) {
+                JOptionPane.showMessageDialog(this, "Nro. de Solicitud " + numeroSolicitud, "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al registrar la solicitud", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El ID debe ser un número entero", "Validación", JOptionPane.WARNING_MESSAGE);
         }
     }
 }
