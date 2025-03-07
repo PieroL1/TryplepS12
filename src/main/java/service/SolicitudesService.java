@@ -53,4 +53,13 @@ public class SolicitudesService {
     public List<SolicitudPersonal> consultarSolicitudesPorSolicitante(int idSolicitante) {
         return solicitudesDAO.listarSolicitudesPorSolicitante(idSolicitante);
     }
+    public Usuarios obtenerUsuarioPorCargo(String cargo) {
+        return usuariosDAO.obtenerUsuarioPorCargo(cargo);
+    }
+
+    public List<Usuarios> obtenerUsuariosPorCargo(String cargo) {
+        return usuariosDAO.obtenerUsuariosPorCargo(cargo);
+    }
+
+    
 }

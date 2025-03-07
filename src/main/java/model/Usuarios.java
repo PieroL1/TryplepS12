@@ -4,12 +4,14 @@ public class Usuarios {
     private String id;
     private String nombre;
     private String cargo;
+    private String password; // Nuevo atributo agregado
 
-    // Constructor con ID
-    public Usuarios(String id, String nombre, String cargo) {
+    // Constructor con ID y Password
+    public Usuarios(String id, String nombre, String cargo, String password) {
         this.id = id;
         this.nombre = nombre;
         this.cargo = cargo;
+        this.password = password;
     }
 
     // Métodos Getter y Setter para id
@@ -37,5 +39,14 @@ public class Usuarios {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+    }
+
+    // Métodos Getter y Setter para password
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

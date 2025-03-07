@@ -4,6 +4,7 @@ import java.util.List;
 import model.DetalleSolicitud;
 import model.Perfil;
 import model.SolicitudPersonal;
+import model.Usuarios;
 import service.SolicitudesService;
 
 public class SolicitudController {
@@ -33,9 +34,21 @@ public class SolicitudController {
     public String registrarSolicitud() {
         return solicitudService.registrarSolicitud(solicitudActual);
     }
+
     
     public List<SolicitudPersonal> consultarSolicitudes(String nroRegistro) {
         int idSolicitante = Integer.parseInt(nroRegistro); // CORREGIDO
         return solicitudService.consultarSolicitudesPorSolicitante(idSolicitante);
     }
+    
+    public Usuarios obtenerEvaluador(String cargo) {
+        return solicitudService.obtenerUsuarioPorCargo(cargo);
+    }
+
+    
+    public List<Usuarios> obtenerJefesDeProyecto() {
+        return solicitudService.obtenerUsuariosPorCargo("jefe_proyecto");
+    }
+
+    
 }

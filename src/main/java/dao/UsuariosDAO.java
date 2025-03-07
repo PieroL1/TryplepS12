@@ -1,15 +1,18 @@
 package dao;
 
+import model.Usuarios;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.Usuarios;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuariosDAO {
 
     // Método para insertar un nuevo usuario (Crear)
-    public boolean crearUsuario(Usuarios usuario, String password) {
+    public boolean crearUsuario(Usuarios usuario) {
         String sql = "INSERT INTO Usuarios (nombre, cargo, password) VALUES (?, ?, ?)";
 
         try (Connection conn = ConexionDB.getConexion();
@@ -17,7 +20,7 @@ public class UsuariosDAO {
 
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getCargo());
-            stmt.setString(3, password); // Contraseña sin encriptar
+            stmt.setString(3, usuario.getPassword()); // Ahora toma el password desde el objeto Usuarios
 
             int filasInsertadas = stmt.executeUpdate();
             return filasInsertadas > 0;
@@ -31,7 +34,7 @@ public class UsuariosDAO {
     // Método para obtener un usuario por su ID (Leer)
     public Usuarios obtenerUsuario(String id) {
         Usuarios usuario = null;
-        String sql = "SELECT id, nombre, cargo FROM Usuarios WHERE id = ?";
+        String sql = "SELECT * FROM Usuarios WHERE id = ?";
 
         try (Connection conn = ConexionDB.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -40,7 +43,12 @@ public class UsuariosDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                usuario = new Usuarios(rs.getString("id"), rs.getString("nombre"), rs.getString("cargo"));
+                usuario = new Usuarios(
+                    rs.getString("id"), 
+                    rs.getString("nombre"), 
+                    rs.getString("cargo"), 
+                    rs.getString("password")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +59,7 @@ public class UsuariosDAO {
     // Método para obtener un usuario por su cargo
     public Usuarios obtenerUsuarioPorCargo(String cargo) {
         Usuarios usuario = null;
-        String sql = "SELECT id, nombre, cargo FROM Usuarios WHERE cargo = ? LIMIT 1";
+        String sql = "SELECT * FROM Usuarios WHERE cargo = ? LIMIT 1";
 
         try (Connection conn = ConexionDB.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -60,7 +68,12 @@ public class UsuariosDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                usuario = new Usuarios(rs.getString("id"), rs.getString("nombre"), rs.getString("cargo"));
+                usuario = new Usuarios(
+                    rs.getString("id"), 
+                    rs.getString("nombre"), 
+                    rs.getString("cargo"), 
+                    rs.getString("password")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,7 +82,7 @@ public class UsuariosDAO {
     }
 
     // Método para actualizar un usuario (Actualizar)
-    public boolean actualizarUsuario(Usuarios usuario, String password) {
+    public boolean actualizarUsuario(Usuarios usuario) {
         String sql = "UPDATE Usuarios SET nombre = ?, cargo = ?, password = ? WHERE id = ?";
 
         try (Connection conn = ConexionDB.getConexion();
@@ -77,8 +90,8 @@ public class UsuariosDAO {
 
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getCargo());
-            stmt.setString(3, password);
-          stmt.setString(4, usuario.getId());
+            stmt.setString(3, usuario.getPassword()); // Ahora toma el password desde el objeto Usuarios
+            stmt.setString(4, usuario.getId());
 
             int filasActualizadas = stmt.executeUpdate();
             return filasActualizadas > 0;
@@ -109,7 +122,7 @@ public class UsuariosDAO {
     // Método para validar usuario en el login
     public Usuarios validarUsuario(String nombre, String password) {
         Usuarios usuario = null;
-        String sql = "SELECT id, nombre, cargo FROM Usuarios WHERE nombre = ? AND password = ?";
+        String sql = "SELECT * FROM Usuarios WHERE nombre = ? AND password = ?";
 
         try (Connection conn = ConexionDB.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -119,11 +132,44 @@ public class UsuariosDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                usuario = new Usuarios(rs.getString("id"), rs.getString("nombre"), rs.getString("cargo"));
+                usuario = new Usuarios(
+                    rs.getString("id"), 
+                    rs.getString("nombre"), 
+                    rs.getString("cargo"), 
+                    rs.getString("password")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return usuario; // Retorna el usuario si es válido, null si no lo es.
+        return usuario;
+    }
+
+    // Método para obtener usuarios por cargo
+    public List<Usuarios> obtenerUsuariosPorCargo(String cargo) {
+        List<Usuarios> listaUsuarios = new ArrayList<>();
+        String sql = "SELECT * FROM Usuarios WHERE cargo = ?";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, cargo);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Usuarios usuario = new Usuarios(
+                    rs.getString("id"), 
+                    rs.getString("nombre"), 
+                    rs.getString("cargo"), 
+                    rs.getString("password")
+                );
+                listaUsuarios.add(usuario);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaUsuarios;
     }
 }
