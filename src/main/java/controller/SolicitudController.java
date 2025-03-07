@@ -4,15 +4,14 @@ import java.util.List;
 import model.DetalleSolicitud;
 import model.Perfil;
 import model.SolicitudPersonal;
-import service.SolicitudService;
-import service.SolicitudServiceImpl;
+import service.SolicitudesService;
 
 public class SolicitudController {
-    private SolicitudService solicitudService;
+    private SolicitudesService solicitudService;
     private SolicitudPersonal solicitudActual;
     
     public SolicitudController() {
-        solicitudService = new SolicitudServiceImpl();
+        solicitudService = new SolicitudesService();
     }
     
     public List<Perfil> obtenerPerfiles() {
@@ -20,9 +19,11 @@ public class SolicitudController {
     }
     
     public SolicitudPersonal iniciarSolicitud(String nroRegistroSolicitante) {
-        solicitudActual = solicitudService.iniciarSolicitud(nroRegistroSolicitante);
+        int idSolicitante = Integer.parseInt(nroRegistroSolicitante); // CORREGIDO
+        solicitudActual = solicitudService.iniciarSolicitud(idSolicitante);
         return solicitudActual;
     }
+
     
     public void agregarDetalle(Perfil perfil, int cantidad) {
         DetalleSolicitud detalle = new DetalleSolicitud(perfil, cantidad);
@@ -34,6 +35,7 @@ public class SolicitudController {
     }
     
     public List<SolicitudPersonal> consultarSolicitudes(String nroRegistro) {
-        return solicitudService.consultarSolicitudesPorSolicitante(nroRegistro);
+        int idSolicitante = Integer.parseInt(nroRegistro); // CORREGIDO
+        return solicitudService.consultarSolicitudesPorSolicitante(idSolicitante);
     }
 }

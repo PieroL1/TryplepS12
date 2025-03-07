@@ -1,16 +1,23 @@
 package util;
+
+import model.Usuarios;
+
 public class SessionManager {
-    private static String usuarioActual;
-    
-    public static void iniciarSesion(String nroRegistro) {
-        usuarioActual = nroRegistro;
+    private static Usuarios usuarioActual;
+
+    public static void setUsuarioActual(Usuarios usuario) {
+        usuarioActual = usuario;
     }
-    
-    public static String getUsuarioActual() {
+
+    public static Usuarios getUsuarioActual() {
         return usuarioActual;
     }
     
+    
+
+    
     public static void cerrarSesion() {
         usuarioActual = null;
-    }
+    } 
+    
 }

@@ -1,72 +1,82 @@
 package model;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SolicitudPersonal {
-    private String numeroSolicitud;
-    private Date fechaRegistro;
-    private Empleado solicitante;
-    private Empleado evaluador;
+    private int numeroSolicitud;
+    private Timestamp fechaRegistro;
+    private int idSolicitante; // Almacena el ID del solicitante (Usuario)
+    private int idEvaluador; // Almacena el ID del evaluador (Usuario)
     private String estado; // PENDIENTE, APROBADO, RECHAZADO
     private List<DetalleSolicitud> detalles;
-    
+
     public SolicitudPersonal() {
         this.detalles = new ArrayList<>();
-        this.fechaRegistro = new Date();
+        this.fechaRegistro = new Timestamp(System.currentTimeMillis());
         this.estado = "PENDIENTE";
     }
-    
-    // Getters y setters
-    public String getNumeroSolicitud() {
+
+    // Constructor con parámetros
+    public SolicitudPersonal(int numeroSolicitud, Timestamp fechaRegistro, int idSolicitante, int idEvaluador, String estado) {
+        this.numeroSolicitud = numeroSolicitud;
+        this.fechaRegistro = fechaRegistro;
+        this.idSolicitante = idSolicitante;
+        this.idEvaluador = idEvaluador;
+        this.estado = estado;
+        this.detalles = new ArrayList<>();
+    }
+
+    // Getters y Setters
+    public int getNumeroSolicitud() {
         return numeroSolicitud;
     }
-    
-    public void setNumeroSolicitud(String numeroSolicitud) {
+
+    public void setNumeroSolicitud(int numeroSolicitud) {
         this.numeroSolicitud = numeroSolicitud;
     }
-    
-    public Date getFechaRegistro() {
+
+    public Timestamp getFechaRegistro() {
         return fechaRegistro;
     }
-    
-    public void setFechaRegistro(Date fechaRegistro) {
+
+    public void setFechaRegistro(Timestamp fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
-    
-    public Empleado getSolicitante() {
-        return solicitante;
+
+    public int getIdSolicitante() {
+        return idSolicitante;
     }
-    
-    public void setSolicitante(Empleado solicitante) {
-        this.solicitante = solicitante;
+
+    public void setIdSolicitante(int idSolicitante) {
+        this.idSolicitante = idSolicitante;
     }
-    
-    public Empleado getEvaluador() {
-        return evaluador;
+
+    public int getIdEvaluador() {
+        return idEvaluador;
     }
-    
-    public void setEvaluador(Empleado evaluador) {
-        this.evaluador = evaluador;
+
+    public void setIdEvaluador(int idEvaluador) {
+        this.idEvaluador = idEvaluador;
     }
-    
+
     public String getEstado() {
         return estado;
     }
-    
+
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
+
     public List<DetalleSolicitud> getDetalles() {
         return detalles;
     }
-    
+
     public void setDetalles(List<DetalleSolicitud> detalles) {
         this.detalles = detalles;
     }
-    
+
     public void agregarDetalle(DetalleSolicitud detalle) {
         this.detalles.add(detalle);
     }
