@@ -4,7 +4,7 @@ public class Usuarios {
     private String id;
     private String nombre;
     private String cargo;
-    private String password; // Nuevo atributo agregado
+    private String password;
 
     // Constructor sin parámetros
     public Usuarios() {
@@ -52,5 +52,10 @@ public class Usuarios {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

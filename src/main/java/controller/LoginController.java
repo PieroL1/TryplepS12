@@ -5,7 +5,7 @@ import model.Usuarios;
 import service.LoginService;
 import util.SessionManager;
 import view.FormGestionarPerfiles;
-import view.FormRegistrarSolicitud;
+import view.FormAsignarEspecialista;
 import view.FormMenuPrincipal;
 
 public class LoginController {
@@ -32,6 +32,9 @@ public class LoginController {
         } else if (SessionManager.esJefeDeSistemas()) {
             FormMenuPrincipal formMenuPrincipal = new FormMenuPrincipal();
             formMenuPrincipal.setVisible(true);
+        } else if (SessionManager.esJefeDeContrataciones()) {
+            FormAsignarEspecialista  formAsignarEspecialista = new FormAsignarEspecialista();
+            formAsignarEspecialista.setVisible(true);
         } else {
             // Redirigir a una ventana por defecto o mostrar un mensaje de error.
             JOptionPane.showMessageDialog(null, "Rol no reconocido.", "Error", JOptionPane.ERROR_MESSAGE);

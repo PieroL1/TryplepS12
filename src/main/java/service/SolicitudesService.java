@@ -71,4 +71,12 @@ public class SolicitudesService {
     public List<Usuarios> obtenerUsuariosPorCargo(String cargo) {
         return usuariosDAO.obtenerUsuariosPorCargo(cargo);
     }
+    
+    public List<SolicitudPersonal> obtenerSolicitudesPendientes() {
+        return solicitudesDAO.obtenerSolicitudesPendientes();
+    }
+
+    public boolean asignarEspecialista(int solicitudId, String especialistaId) {
+        return solicitudesDAO.asignarEspecialista(solicitudId, especialistaId);
+    }
 }

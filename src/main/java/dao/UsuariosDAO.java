@@ -196,4 +196,28 @@ public class UsuariosDAO {
 
         return listaUsuarios;
     }
+    
+    public List<Usuarios> obtenerUsuariosPorRol(String rol) {
+        List<Usuarios> usuarios = new ArrayList<>();
+        String sql = "SELECT * FROM usuarios WHERE cargo = ?";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, rol);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Usuarios usuario = new Usuarios();
+                usuario.setId(rs.getString("id"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setCargo(rs.getString("cargo"));
+                usuario.setPassword(rs.getString("password"));
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuarios;
+    }
 }

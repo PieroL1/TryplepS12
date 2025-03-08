@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SolicitudPersonal {
@@ -12,7 +13,22 @@ public class SolicitudPersonal {
     private String estado; // PENDIENTE, APROBADO, RECHAZADO
     private List<DetalleSolicitud> detalles;
     private String nombreJefeProyecto; // Nuevo campo para almacenar el nombre del jefe de proyecto
+    private int id;
+    private int idJefeProyecto;
+    private Date fechaSolicitud;
 
+    public int getId() {
+        return id;
+    }
+
+    public int getIdJefeProyecto() {
+        return idJefeProyecto;
+    }
+
+    public Date getFechaSolicitud() {
+        return fechaSolicitud;
+    }
+    
     public SolicitudPersonal() {
         this.detalles = new ArrayList<>();
         this.fechaRegistro = new Timestamp(System.currentTimeMillis());
@@ -89,4 +105,18 @@ public class SolicitudPersonal {
     public void setNombreJefeProyecto(String nombreJefeProyecto) {
         this.nombreJefeProyecto = nombreJefeProyecto;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setIdJefeProyecto(int idJefeProyecto) {
+        this.idJefeProyecto = idJefeProyecto;
+    }
+
+    public void setFechaSolicitud(Date fechaSolicitud) {
+        this.fechaSolicitud = fechaSolicitud;
+    }
+    
+    
 }

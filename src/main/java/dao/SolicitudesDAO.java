@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -235,5 +236,87 @@ public class SolicitudesDAO {
             e.printStackTrace();
         }
         return nombre;
+    }
+    
+    public List<SolicitudPersonal> obtenerSolicitudesPendientes() {
+        List<SolicitudPersonal> solicitudes = new ArrayList<>();
+        String sql = "SELECT * FROM solicitudes WHERE estado = 'pendiente'";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                SolicitudPersonal solicitud = new SolicitudPersonal();
+                solicitud.setId(rs.getInt("id"));
+                solicitud.setIdJefeProyecto(rs.getInt("id_jefe_proyecto"));
+                solicitud.setEstado(rs.getString("estado"));
+                solicitud.setFechaSolicitud(rs.getDate("fecha_solicitud"));
+                solicitudes.add(solicitud);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return solicitudes;
+    }
+
+    public boolean asignarEspecialista(int solicitudId, String especialistaId) {
+        String sql = "UPDATE solicitudes SET especialista_id = ?, estado = 'asignada' WHERE id = ?";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, especialistaId);
+            stmt.setInt(2, solicitudId);
+            int filasActualizadas = stmt.executeUpdate();
+            return filasActualizadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<SolicitudPersonal> obtenerSolicitudesAsignadas(String especialistaId) {
+        List<SolicitudPersonal> solicitudes = new ArrayList<>();
+        String sql = "SELECT * FROM solicitudes WHERE especialista_id = ? AND estado = 'asignada'";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, especialistaId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                SolicitudPersonal solicitud = new SolicitudPersonal();
+                solicitud.setId(rs.getInt("id"));
+                solicitud.setIdJefeProyecto(rs.getInt("id_jefe_proyecto"));
+                solicitud.setEstado(rs.getString("estado"));
+                solicitud.setFechaSolicitud(rs.getDate("fecha_solicitud"));
+                solicitudes.add(solicitud);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return solicitudes;
+    }
+
+    public boolean guardarInformacionComplementaria(int solicitudId, String fechaExamen, String fechaEntrevista, String sueldo, String tipoContrato) {
+        String sql = "INSERT INTO informacion_complementaria (solicitud_id, fecha_examen, fecha_entrevista, sueldo, tipo_contrato) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, solicitudId);
+            stmt.setDate(2, Date.valueOf(fechaExamen));
+            stmt.setDate(3, Date.valueOf(fechaEntrevista));
+            stmt.setBigDecimal(4, new BigDecimal(sueldo));
+            stmt.setString(5, tipoContrato);
+
+            int filasInsertadas = stmt.executeUpdate();
+            return filasInsertadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
