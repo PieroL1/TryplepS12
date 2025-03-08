@@ -6,6 +6,10 @@ public class Usuarios {
     private String cargo;
     private String password; // Nuevo atributo agregado
 
+    // Constructor sin parámetros
+    public Usuarios() {
+    }
+
     // Constructor con ID y Password
     public Usuarios(String id, String nombre, String cargo, String password) {
         this.id = id;

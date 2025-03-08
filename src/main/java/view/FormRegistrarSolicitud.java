@@ -29,8 +29,16 @@ public class FormRegistrarSolicitud extends JFrame {
     public FormRegistrarSolicitud() {
         controller = new SolicitudController();
 
+        // Verificar si el usuario actual es Jefe de Proyecto
+        Usuarios usuarioActual = SessionManager.getUsuarioActual();
+        if (!SessionManager.esJefeDeSistemas()) {
+            JOptionPane.showMessageDialog(this, "Acceso denegado. Solo el Jefe de Proyecto puede acceder a esta funcionalidad.", "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
+            dispose();
+            return;
+        }
+
         setTitle("Registrar Solicitud de Personal");
-        setSize(800, 600);
+        setSize(800, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -51,7 +59,7 @@ public class FormRegistrarSolicitud extends JFrame {
         gbc.gridy = 0;
         panelDatos.add(new JLabel("DATOS DEL EVALUADOR:"), gbc);
 
-        // Get a project manager user for evaluator
+        // Obtener un usuario de tipo Jefe de Proyecto
         Usuarios evaluador = controller.obtenerEvaluador("jefe_proyecto");
 
         gbc.gridx = 0;
@@ -78,7 +86,7 @@ public class FormRegistrarSolicitud extends JFrame {
 
         txtCargoEvaluador = new JTextField(15);
         txtCargoEvaluador.setEditable(false);
-        txtCargoEvaluador.setText("Jefe de Proyecto"); // Fixed text for cargo
+        txtCargoEvaluador.setText("Jefe de Proyecto"); // Texto fijo para el cargo
         gbc.gridx = 5;
         panelDatos.add(txtCargoEvaluador, gbc);
 
@@ -88,7 +96,7 @@ public class FormRegistrarSolicitud extends JFrame {
         gbc.gridwidth = 1;
         panelDatos.add(new JLabel("DATOS DEL SOLICITANTE:"), gbc);
 
-        // Get a systems manager user for solicitante
+        // Obtener un usuario de tipo Jefe de Sistemas
         Usuarios solicitante = controller.obtenerEvaluador("jefe_sistemas");
 
         gbc.gridx = 0;
@@ -115,7 +123,7 @@ public class FormRegistrarSolicitud extends JFrame {
 
         txtCargoSolicitante = new JTextField(15);
         txtCargoSolicitante.setEditable(false);
-        txtCargoSolicitante.setText("Jefe de Sistemas"); // Fixed text for cargo
+        txtCargoSolicitante.setText("Jefe de Sistemas"); // Texto fijo para el cargo
         gbc.gridx = 5;
         panelDatos.add(txtCargoSolicitante, gbc);
 

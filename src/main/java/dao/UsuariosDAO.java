@@ -30,6 +30,30 @@ public class UsuariosDAO {
             return false;
         }
     }
+    
+   public Usuarios obtenerUsuarioPorNombre(String nombre) {
+        Usuarios usuario = null;
+        String sql = "SELECT * FROM usuarios WHERE nombre = ?";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nombre);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                usuario = new Usuarios();
+                usuario.setId(rs.getString("id"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setCargo(rs.getString("cargo"));
+                usuario.setPassword(rs.getString("password"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuario;
+    }
+
 
     // Método para obtener un usuario por su ID (Leer)
     public Usuarios obtenerUsuario(String id) {

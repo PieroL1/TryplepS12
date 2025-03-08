@@ -1,90 +1,72 @@
 package view;
 
-import util.SessionManager;
-import dao.UsuariosDAO;
-import model.Usuarios;
+import controller.LoginController;
 import javax.swing.*;
 import java.awt.*;
 
 public class FormLogin extends JFrame {
-    private JTextField txtUsuario;
+    private JTextField txtNombre;
     private JPasswordField txtPassword;
-    private UsuariosDAO usuariosDAO;
+    private JButton btnLogin;
+    private LoginController loginController;
 
     public FormLogin() {
-        usuariosDAO = new UsuariosDAO();
-        
-        setTitle("TRYPLEP - Sistema de RRHH");
+        loginController = new LoginController();
+
+        setTitle("Login");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        // Crear el formulario
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
 
-        // Logo
-        JLabel lblLogo = new JLabel("TRYPLEP S.A.C.");
-        lblLogo.setFont(new Font("Arial", Font.BOLD, 24));
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        panel.add(lblLogo, gbc);
+        panel.add(new JLabel("Nombre:"), gbc);
 
-        // Usuario
+        txtNombre = new JTextField(20);
+        gbc.gridx = 1;
+        panel.add(txtNombre, gbc);
+
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        panel.add(new JLabel("Usuario:"), gbc);
+        panel.add(new JLabel("Password:"), gbc);
 
-        txtUsuario = new JTextField(15);
-        gbc.gridx = 1;
-        panel.add(txtUsuario, gbc);
-
-        // Contraseña
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panel.add(new JLabel("Contraseña:"), gbc);
-
-        txtPassword = new JPasswordField(15);
+        txtPassword = new JPasswordField(20);
         gbc.gridx = 1;
         panel.add(txtPassword, gbc);
 
-        // Botón ingresar
-        JButton btnIngresar = new JButton("Ingresar");
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        panel.add(btnIngresar, gbc);
-
-        btnIngresar.addActionListener(e -> validarCredenciales());
+        btnLogin = new JButton("Login");
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(btnLogin, gbc);
 
         add(panel);
+
+        // Evento de login
+        btnLogin.addActionListener(e -> login());
     }
 
-    private void validarCredenciales() {
-        String usuarioIngresado = txtUsuario.getText().trim();
-        String passwordIngresado = new String(txtPassword.getPassword()).trim();
+    private void login() {
+        String nombre = txtNombre.getText().trim();
+        String password = new String(txtPassword.getPassword()).trim();
 
-        if (usuarioIngresado.isEmpty() || passwordIngresado.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar usuario y contraseña", "Validación", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // Validar en la BD
-        Usuarios usuario = usuariosDAO.validarUsuario(usuarioIngresado, passwordIngresado);
-
-        if (usuario != null) {
-            SessionManager.setUsuarioActual(usuario);
-            abrirMenuPrincipal();
+        if (loginController.iniciarSesion(nombre, password)) {
+            dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Credenciales incorrectas", "Error de autenticación", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nombre o Password incorrectos", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void abrirMenuPrincipal() {
-        FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
-        menuPrincipal.setVisible(true);
-        dispose();
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            FormLogin formLogin = new FormLogin();
+            formLogin.setVisible(true);
+        });
     }
 }
