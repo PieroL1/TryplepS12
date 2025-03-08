@@ -8,7 +8,7 @@ import model.Usuarios;
 import service.SolicitudesService;
 
 public class SolicitudController {
-    private SolicitudesService solicitudService;
+     private SolicitudesService solicitudService;
     private SolicitudPersonal solicitudActual;
     
     public SolicitudController() {
@@ -20,12 +20,15 @@ public class SolicitudController {
     }
     
     public SolicitudPersonal iniciarSolicitud(int idSolicitante) {
-        solicitudActual = solicitudService.iniciarSolicitud(idSolicitante);
+        solicitudActual = new SolicitudPersonal();
+        solicitudActual.setIdSolicitante(idSolicitante);
         return solicitudActual;
     }
 
-    
     public void agregarDetalle(Perfil perfil, int cantidad) {
+        if (solicitudActual == null) {
+            solicitudActual = new SolicitudPersonal();
+        }
         DetalleSolicitud detalle = new DetalleSolicitud(perfil, cantidad);
         solicitudActual.agregarDetalle(detalle);
     }
@@ -34,10 +37,14 @@ public class SolicitudController {
         return solicitudService.registrarSolicitud(solicitudActual);
     }
 
-    
-    public List<SolicitudPersonal> consultarSolicitudes(int idSolicitante) {
-        return solicitudService.consultarSolicitudesPorSolicitante(idSolicitante);
+    public List<SolicitudPersonal> consultarSolicitudes() {
+        return solicitudService.consultarSolicitudes();
     }
+    
+    public SolicitudPersonal consultarSolicitudPorId(int id) {
+        return solicitudService.consultarSolicitudPorId(id);
+    }
+
     
     public Usuarios obtenerEvaluador(String cargo) {
         return solicitudService.obtenerUsuarioPorCargo(cargo);

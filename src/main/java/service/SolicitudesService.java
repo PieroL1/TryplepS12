@@ -49,10 +49,21 @@ public class SolicitudesService {
         return solicitud;
     }
 
+    // Consultar todas las solicitudes
+    public List<SolicitudPersonal> consultarSolicitudes() {
+        return solicitudesDAO.listarSolicitudes();
+    }
+
+    // Consultar una solicitud por su ID
+    public SolicitudPersonal consultarSolicitudPorId(int id) {
+        return solicitudesDAO.obtenerSolicitudPorId(id);
+    }
+
     // Consultar las solicitudes realizadas por un solicitante
     public List<SolicitudPersonal> consultarSolicitudesPorSolicitante(int idSolicitante) {
         return solicitudesDAO.listarSolicitudesPorSolicitante(idSolicitante);
     }
+
     public Usuarios obtenerUsuarioPorCargo(String cargo) {
         return usuariosDAO.obtenerUsuarioPorCargo(cargo);
     }
@@ -60,6 +71,4 @@ public class SolicitudesService {
     public List<Usuarios> obtenerUsuariosPorCargo(String cargo) {
         return usuariosDAO.obtenerUsuariosPorCargo(cargo);
     }
-
-    
 }

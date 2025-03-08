@@ -1,4 +1,3 @@
-
 package view;
 
 import util.SessionManager;
@@ -61,11 +60,8 @@ public class FormMenuPrincipal extends JFrame {
         itemConsultarSolicitud.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí iría el código para abrir el formulario de consulta
-                JOptionPane.showMessageDialog(FormMenuPrincipal.this, 
-                        "Funcionalidad en desarrollo: Consultar Solicitudes",
-                        "Información", 
-                        JOptionPane.INFORMATION_MESSAGE);
+                FormConsultarSolicitud formConsultarSolicitud = new FormConsultarSolicitud();
+                formConsultarSolicitud.setVisible(true);
             }
         });
         

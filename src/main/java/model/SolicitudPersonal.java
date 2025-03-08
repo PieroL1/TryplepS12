@@ -11,6 +11,7 @@ public class SolicitudPersonal {
     private int idEvaluador; // Almacena el ID del evaluador (Usuario)
     private String estado; // PENDIENTE, APROBADO, RECHAZADO
     private List<DetalleSolicitud> detalles;
+    private String nombreJefeProyecto; // Nuevo campo para almacenar el nombre del jefe de proyecto
 
     public SolicitudPersonal() {
         this.detalles = new ArrayList<>();
@@ -79,5 +80,13 @@ public class SolicitudPersonal {
 
     public void agregarDetalle(DetalleSolicitud detalle) {
         this.detalles.add(detalle);
+    }
+
+    public String getNombreJefeProyecto() {
+        return nombreJefeProyecto;
+    }
+
+    public void setNombreJefeProyecto(String nombreJefeProyecto) {
+        this.nombreJefeProyecto = nombreJefeProyecto;
     }
 }

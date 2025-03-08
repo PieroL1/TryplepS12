@@ -187,10 +187,18 @@ public class FormRegistrarSolicitud extends JFrame {
 
         add(panel);
 
+        // Inicializar la solicitud actual al abrir el formulario
+        inicializarSolicitud();
+
         // Eventos
         btnAgregarPerfil.addActionListener(e -> agregarDetalle());
         btnRegistrar.addActionListener(e -> registrarSolicitud());
         btnCerrar.addActionListener(e -> dispose());
+    }
+
+    private void inicializarSolicitud() {
+        int idSolicitante = Integer.parseInt(txtIdSolicitante.getText().trim());
+        solicitudActual = controller.iniciarSolicitud(idSolicitante);
     }
 
     private void agregarDetalle() {
@@ -214,32 +222,26 @@ public class FormRegistrarSolicitud extends JFrame {
 
             txtCantidad.setText("");
             cmbPerfiles.requestFocus();
+
+            // Agregar el detalle a la solicitud actual
+            controller.agregarDetalle(perfilSeleccionado, cantidad);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "La cantidad debe ser un número entero", "Validación", JOptionPane.WARNING_MESSAGE);
         }
     }
 
     private void registrarSolicitud() {
-        String idSolicitanteStr = txtIdSolicitante.getText().trim();
-        
-        if (idSolicitanteStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un ID de Jefe de Sistemas", "Validación", JOptionPane.WARNING_MESSAGE);
-            return;
+        if (solicitudActual == null) {
+            inicializarSolicitud();
         }
+
+        String numeroSolicitud = controller.registrarSolicitud();
         
-        try {
-            int idSolicitante = Integer.parseInt(idSolicitanteStr);
-            solicitudActual = controller.iniciarSolicitud(idSolicitante);
-            String numeroSolicitud = controller.registrarSolicitud();
-            
-            if (numeroSolicitud != null) {
-                JOptionPane.showMessageDialog(this, "Nro. de Solicitud " + numeroSolicitud, "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al registrar la solicitud", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El ID debe ser un número entero", "Validación", JOptionPane.WARNING_MESSAGE);
+        if (numeroSolicitud != null) {
+            JOptionPane.showMessageDialog(this, "Nro. de Solicitud " + numeroSolicitud, "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al registrar la solicitud", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
