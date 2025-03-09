@@ -7,6 +7,7 @@ import dao.SolicitudesDAO;
 import java.util.List;
 import model.Usuarios;
 import model.Perfil;
+import model.SolicitudPerfil;
 import model.SolicitudPersonal;
 
 public class SolicitudesService {
@@ -78,5 +79,16 @@ public class SolicitudesService {
 
     public boolean asignarEspecialista(int solicitudId, String especialistaId) {
         return solicitudesDAO.asignarEspecialista(solicitudId, especialistaId);
+    }
+    
+     public List<SolicitudPerfil> obtenerSolicitudesAsignadasConPerfiles(String especialistaId) {
+        System.out.println("Servicio: obteniendo solicitudes asignadas para el especialista ID: " + especialistaId);  // Imprimir el ID del especialista
+        List<SolicitudPerfil> solicitudesPerfiles = solicitudesDAO.obtenerSolicitudesAsignadasConPerfiles(especialistaId);
+        System.out.println("Servicio: número de solicitudes obtenidas: " + solicitudesPerfiles.size());  // Imprimir el número de solicitudes obtenidas
+        return solicitudesPerfiles;
+    }
+     
+    public boolean guardarInformacionComplementaria(int solicitudId, String fechaExamen, String fechaEntrevista, String sueldo, String tipoContrato) {
+        return solicitudesDAO.guardarInformacionComplementaria(solicitudId, fechaExamen, fechaEntrevista, sueldo, tipoContrato);
     }
 }

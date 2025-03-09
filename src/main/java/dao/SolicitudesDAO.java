@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.DetalleSolicitud;
+import model.SolicitudPerfil;
 import model.SolicitudPersonal;
 
 public class SolicitudesDAO {
@@ -276,28 +277,34 @@ public class SolicitudesDAO {
         return false;
     }
 
-    public List<SolicitudPersonal> obtenerSolicitudesAsignadas(String especialistaId) {
-        List<SolicitudPersonal> solicitudes = new ArrayList<>();
-        String sql = "SELECT * FROM solicitudes WHERE especialista_id = ? AND estado = 'asignada'";
+      public List<SolicitudPerfil> obtenerSolicitudesAsignadasConPerfiles(String especialistaId) {
+        List<SolicitudPerfil> solicitudesPerfiles = new ArrayList<>();
+        String sql = "SELECT s.id, s.fecha_solicitud, p.nombre, sp.cantidad " +
+                     "FROM solicitudes s " +
+                     "JOIN solicitudes_perfiles sp ON s.id = sp.id_solicitud " +
+                     "JOIN perfiles p ON sp.id_perfil = p.id " +
+                     "WHERE s.especialista_id = ? AND s.estado = 'asignada'";
 
         try (Connection conn = ConexionDB.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, especialistaId);
+            System.out.println("DAO: ejecutando consulta SQL con especialista ID: " + especialistaId);  // Imprimir el ID del especialista
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                SolicitudPersonal solicitud = new SolicitudPersonal();
-                solicitud.setId(rs.getInt("id"));
-                solicitud.setIdJefeProyecto(rs.getInt("id_jefe_proyecto"));
-                solicitud.setEstado(rs.getString("estado"));
-                solicitud.setFechaSolicitud(rs.getDate("fecha_solicitud"));
-                solicitudes.add(solicitud);
+                SolicitudPerfil solicitudPerfil = new SolicitudPerfil();
+                solicitudPerfil.setId(rs.getInt("id"));
+                solicitudPerfil.setFechaSolicitud(rs.getDate("fecha_solicitud"));
+                solicitudPerfil.setNombrePerfil(rs.getString("nombre"));
+                solicitudPerfil.setCantidad(rs.getInt("cantidad"));
+                solicitudesPerfiles.add(solicitudPerfil);
             }
+            System.out.println("DAO: número de solicitudes obtenidas: " + solicitudesPerfiles.size());  // Imprimir el número de solicitudes obtenidas
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return solicitudes;
+        return solicitudesPerfiles;
     }
 
     public boolean guardarInformacionComplementaria(int solicitudId, String fechaExamen, String fechaEntrevista, String sueldo, String tipoContrato) {

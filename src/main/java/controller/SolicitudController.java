@@ -3,6 +3,7 @@ package controller;
 import java.util.List;
 import model.DetalleSolicitud;
 import model.Perfil;
+import model.SolicitudPerfil;
 import model.SolicitudPersonal;
 import model.Usuarios;
 import service.SolicitudesService;
@@ -68,6 +69,17 @@ public class SolicitudController {
 
     public boolean asignarEspecialista(int solicitudId, String especialistaId) {
         return solicitudService.asignarEspecialista(solicitudId, especialistaId);
+    }
+    
+    public List<SolicitudPerfil> obtenerSolicitudesAsignadasConPerfiles(String especialistaId) {
+        System.out.println("Obteniendo solicitudes asignadas para el especialista ID: " + especialistaId);  // Imprimir el ID del especialista
+        List<SolicitudPerfil> solicitudesPerfiles = solicitudService.obtenerSolicitudesAsignadasConPerfiles(especialistaId);
+        System.out.println("Número de solicitudes obtenidas: " + solicitudesPerfiles.size());  // Imprimir el número de solicitudes obtenidas
+        return solicitudesPerfiles;
+    }
+    
+    public boolean guardarInformacionComplementaria(int solicitudId, String fechaExamen, String fechaEntrevista, String sueldo, String tipoContrato) {
+        return solicitudService.guardarInformacionComplementaria(solicitudId, fechaExamen, fechaEntrevista, sueldo, tipoContrato);
     }
 
     

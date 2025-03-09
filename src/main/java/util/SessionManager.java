@@ -28,4 +28,8 @@ public class SessionManager {
     public static boolean esJefeDeContrataciones() {
         return usuarioActual != null && "jefe_contrataciones".equalsIgnoreCase(usuarioActual.getCargo());
     }
+    
+    public static boolean esEspecialistaDeContrataciones() {
+        return usuarioActual != null && "especialista_contrataciones".equalsIgnoreCase(usuarioActual.getCargo());
+    }
 }
