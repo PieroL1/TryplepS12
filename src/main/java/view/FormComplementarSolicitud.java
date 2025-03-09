@@ -2,6 +2,7 @@ package view;
 
 import controller.SolicitudController;
 import model.SolicitudPerfil;
+import model.Usuarios;
 import util.SessionManager;
 
 import javax.swing.*;
@@ -24,7 +25,8 @@ public class FormComplementarSolicitud extends JFrame {
         controller = new SolicitudController();
 
         // Verificar si el usuario actual es Especialista de Contrataciones
-        if (!SessionManager.getUsuarioActual().getCargo().equalsIgnoreCase("especialista_contrataciones")) {
+        Usuarios usuarioActual = (Usuarios) SessionManager.getUsuarioActual();
+        if (!usuarioActual.getCargo().equalsIgnoreCase("especialista_contrataciones")) {
             JOptionPane.showMessageDialog(this, "Acceso denegado. Solo el Especialista de Contrataciones puede acceder a esta funcionalidad.", "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
             dispose();
             return;
@@ -116,7 +118,8 @@ public class FormComplementarSolicitud extends JFrame {
     }
 
     private void cargarSolicitudesAsignadas() {
-        String especialistaId = SessionManager.getUsuarioActual().getId();
+        Usuarios usuarioActual = (Usuarios) SessionManager.getUsuarioActual();
+        String especialistaId = usuarioActual.getId();
         System.out.println("Especialista ID: " + especialistaId);  // Imprimir el ID del especialista
         List<SolicitudPerfil> solicitudesPerfiles = controller.obtenerSolicitudesAsignadasConPerfiles(especialistaId);
         System.out.println("Solicitudes obtenidas: " + solicitudesPerfiles.size());  // Imprimir el número de solicitudes obtenidas

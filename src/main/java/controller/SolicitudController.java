@@ -81,6 +81,14 @@ public class SolicitudController {
     public boolean guardarInformacionComplementaria(int solicitudId, String fechaExamen, String fechaEntrevista, String sueldo, String tipoContrato) {
         return solicitudService.guardarInformacionComplementaria(solicitudId, fechaExamen, fechaEntrevista, sueldo, tipoContrato);
     }
+    
+     public List<SolicitudPerfil> obtenerSolicitudesConInformacionComplementaria() {
+        return solicitudService.obtenerSolicitudesConInformacionComplementaria();
+    }
+
+    public boolean registrarPostulacion(int postulanteId, int solicitudId) {
+        return solicitudService.registrarPostulacion(postulanteId, solicitudId);
+    }
 
     
 }

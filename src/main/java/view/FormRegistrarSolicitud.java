@@ -30,8 +30,8 @@ public class FormRegistrarSolicitud extends JFrame {
         controller = new SolicitudController();
 
         // Verificar si el usuario actual es Jefe de Proyecto
-        Usuarios usuarioActual = SessionManager.getUsuarioActual();
-        if (!SessionManager.esJefeDeSistemas()) {
+        Usuarios usuarioActual = (Usuarios) SessionManager.getUsuarioActual();
+        if (!SessionManager.esJefeDeProyecto()) {
             JOptionPane.showMessageDialog(this, "Acceso denegado. Solo el Jefe de Proyecto puede acceder a esta funcionalidad.", "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
             dispose();
             return;

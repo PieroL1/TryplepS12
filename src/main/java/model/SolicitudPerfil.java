@@ -7,6 +7,10 @@ public class SolicitudPerfil {
     private Date fechaSolicitud;
     private String nombrePerfil;
     private int cantidad;
+    private Date fechaExamen;
+    private Date fechaEntrevista;
+
+    // Getters y Setters
 
     public int getId() {
         return id;
@@ -38,5 +42,21 @@ public class SolicitudPerfil {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Date getFechaExamen() {
+        return fechaExamen;
+    }
+
+    public void setFechaExamen(Date fechaExamen) {
+        this.fechaExamen = fechaExamen;
+    }
+
+    public Date getFechaEntrevista() {
+        return fechaEntrevista;
+    }
+
+    public void setFechaEntrevista(Date fechaEntrevista) {
+        this.fechaEntrevista = fechaEntrevista;
     }
 }

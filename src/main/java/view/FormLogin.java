@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FormLogin extends JFrame {
-    private JTextField txtNombre;
+    private JTextField txtCredencial;
     private JPasswordField txtPassword;
     private JButton btnLogin;
     private LoginController loginController;
@@ -26,11 +26,11 @@ public class FormLogin extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(new JLabel("Nombre:"), gbc);
+        panel.add(new JLabel("Nombre o Email:"), gbc);
 
-        txtNombre = new JTextField(20);
+        txtCredencial = new JTextField(20);
         gbc.gridx = 1;
-        panel.add(txtNombre, gbc);
+        panel.add(txtCredencial, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -53,13 +53,13 @@ public class FormLogin extends JFrame {
     }
 
     private void login() {
-        String nombre = txtNombre.getText().trim();
+        String credencial = txtCredencial.getText().trim();
         String password = new String(txtPassword.getPassword()).trim();
 
-        if (loginController.iniciarSesion(nombre, password)) {
+        if (loginController.iniciarSesion(credencial, password)) {
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Nombre o Password incorrectos", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nombre/Email o Password incorrectos", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
         }
     }
 

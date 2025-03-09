@@ -1,15 +1,16 @@
 package util;
 
 import model.Usuarios;
+import model.Postulante;
 
 public class SessionManager {
-    private static Usuarios usuarioActual;
+    private static Object usuarioActual;
 
-    public static void iniciarSesion(Usuarios usuario) {
+    public static void iniciarSesion(Object usuario) {
         usuarioActual = usuario;
     }
 
-    public static Usuarios getUsuarioActual() {
+    public static Object getUsuarioActual() {
         return usuarioActual;
     }
 
@@ -18,18 +19,26 @@ public class SessionManager {
     }
 
     public static boolean esJefeDeProyecto() {
-        return usuarioActual != null && "jefe_proyecto".equalsIgnoreCase(usuarioActual.getCargo());
+        return usuarioActual instanceof Usuarios && "jefe_proyecto".equalsIgnoreCase(((Usuarios) usuarioActual).getCargo());
     }
 
     public static boolean esJefeDeSistemas() {
-        return usuarioActual != null && "jefe_sistemas".equalsIgnoreCase(usuarioActual.getCargo());
+        return usuarioActual instanceof Usuarios && "jefe_sistemas".equalsIgnoreCase(((Usuarios) usuarioActual).getCargo());
     }
-    
+
     public static boolean esJefeDeContrataciones() {
-        return usuarioActual != null && "jefe_contrataciones".equalsIgnoreCase(usuarioActual.getCargo());
+        return usuarioActual instanceof Usuarios && "jefe_contrataciones".equalsIgnoreCase(((Usuarios) usuarioActual).getCargo());
+    }
+
+    public static boolean esEspecialistaDeContrataciones() {
+        return usuarioActual instanceof Usuarios && "especialista_contrataciones".equalsIgnoreCase(((Usuarios) usuarioActual).getCargo());
     }
     
-    public static boolean esEspecialistaDeContrataciones() {
-        return usuarioActual != null && "especialista_contrataciones".equalsIgnoreCase(usuarioActual.getCargo());
+    public static boolean esAsistenteDeContrataciones() {
+        return usuarioActual instanceof Usuarios && "asistente_contrataciones".equalsIgnoreCase(((Usuarios) usuarioActual).getCargo());
+    }
+
+    public static boolean esPostulante() {
+        return usuarioActual instanceof Postulante;
     }
 }

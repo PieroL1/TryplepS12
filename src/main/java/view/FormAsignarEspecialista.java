@@ -21,7 +21,7 @@ public class FormAsignarEspecialista extends JFrame {
         controller = new SolicitudController();
 
         // Verificar si el usuario actual es Jefe de Contrataciones
-        Usuarios usuarioActual = SessionManager.getUsuarioActual();
+        Usuarios usuarioActual = (Usuarios) SessionManager.getUsuarioActual();
         if (!"jefe_contrataciones".equalsIgnoreCase(usuarioActual.getCargo())) {
             JOptionPane.showMessageDialog(this, "Acceso denegado. Solo el Jefe de Contrataciones puede acceder a esta funcionalidad.", "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
             dispose();

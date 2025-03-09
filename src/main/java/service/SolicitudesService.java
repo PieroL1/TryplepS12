@@ -91,4 +91,14 @@ public class SolicitudesService {
     public boolean guardarInformacionComplementaria(int solicitudId, String fechaExamen, String fechaEntrevista, String sueldo, String tipoContrato) {
         return solicitudesDAO.guardarInformacionComplementaria(solicitudId, fechaExamen, fechaEntrevista, sueldo, tipoContrato);
     }
+    
+    public List<SolicitudPerfil> obtenerSolicitudesConInformacionComplementaria() {
+        return solicitudesDAO.obtenerSolicitudesConInformacionComplementaria();
+    }
+
+   
+
+    public boolean registrarPostulacion(int postulanteId, int solicitudId) {
+        return solicitudesDAO.registrarPostulacion(postulanteId, solicitudId);
+    }
 }

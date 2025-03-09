@@ -326,4 +326,51 @@ public class SolicitudesDAO {
         }
         return false;
     }
+    
+     public List<SolicitudPerfil> obtenerSolicitudesConInformacionComplementaria() {
+        List<SolicitudPerfil> solicitudesPerfiles = new ArrayList<>();
+        String sql = "SELECT s.id, s.fecha_solicitud, sp.cantidad, p.nombre as nombre_perfil, ic.fecha_examen, ic.fecha_entrevista " +
+                     "FROM solicitudes s " +
+                     "JOIN solicitudes_perfiles sp ON s.id = sp.id_solicitud " +
+                     "JOIN perfiles p ON sp.id_perfil = p.id " +
+                     "LEFT JOIN informacion_complementaria ic ON s.id = ic.solicitud_id";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                SolicitudPerfil solicitudPerfil = new SolicitudPerfil();
+                solicitudPerfil.setId(rs.getInt("id"));
+                solicitudPerfil.setFechaSolicitud(rs.getDate("fecha_solicitud"));
+                solicitudPerfil.setNombrePerfil(rs.getString("nombre_perfil"));
+                solicitudPerfil.setCantidad(rs.getInt("cantidad"));
+                solicitudPerfil.setFechaExamen(rs.getDate("fecha_examen"));
+                solicitudPerfil.setFechaEntrevista(rs.getDate("fecha_entrevista"));
+                solicitudesPerfiles.add(solicitudPerfil);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return solicitudesPerfiles;
+    }
+     
+     public boolean registrarPostulacion(int postulanteId, int solicitudId) {
+        String sql = "INSERT INTO postulaciones (id_postulante, id_solicitud, fecha_postulacion) VALUES (?, ?, ?)";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, postulanteId);
+            stmt.setInt(2, solicitudId);
+            stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+
+            int filasInsertadas = stmt.executeUpdate();
+            return filasInsertadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

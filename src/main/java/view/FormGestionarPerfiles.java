@@ -20,8 +20,8 @@ public class FormGestionarPerfiles extends JFrame {
         controller = new PerfilController();
 
         // Verificar si el usuario actual es Jefe de Sistemas
-        Usuarios usuarioActual = SessionManager.getUsuarioActual();
-        if (!SessionManager.esJefeDeProyecto()) {
+        Usuarios usuarioActual = (Usuarios) SessionManager.getUsuarioActual();
+        if (!SessionManager.esJefeDeSistemas()) {
             JOptionPane.showMessageDialog(this, "Acceso denegado. Solo el Jefe de Sistemas puede acceder a esta funcionalidad.", "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
             dispose();
             return;

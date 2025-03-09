@@ -15,4 +15,6 @@ public class UsuariosService {
     public List<Usuarios> obtenerUsuariosPorRol(String rol) {
         return usuariosDAO.obtenerUsuariosPorRol(rol);
     }
+    
+   
 }
