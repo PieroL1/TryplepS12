@@ -21,7 +21,7 @@ public class PostulacionService {
         return postulacionDAO.actualizarPostulante(id, nombre, apellido, email, telefono, direccion, experiencia);
     }
     
-      public List<Postulacion> obtenerPostulaciones() {
+public List<Postulacion> obtenerPostulaciones() {
         return postulacionDAO.obtenerPostulaciones();
     }
 }

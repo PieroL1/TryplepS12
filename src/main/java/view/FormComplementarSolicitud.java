@@ -163,7 +163,7 @@ public class FormComplementarSolicitud extends JFrame {
     }
 
     private void consultarResultados() {
-        // Esta funcionalidad se implementará más adelante
-        JOptionPane.showMessageDialog(this, "Funcionalidad aún no implementada.", "Información", JOptionPane.INFORMATION_MESSAGE);
+        ConsultarResultadosFormulario consultarResultadosFormulario = new ConsultarResultadosFormulario(this, true);
+        consultarResultadosFormulario.setVisible(true);
     }
 }
