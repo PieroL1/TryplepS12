@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.DetalleSolicitud;
+import model.Solicitud;
 import model.SolicitudPerfil;
 import model.SolicitudPersonal;
 
@@ -367,6 +368,49 @@ public class SolicitudesDAO {
 
             int filasInsertadas = stmt.executeUpdate();
             return filasInsertadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+     
+      public List<Solicitud> obtenerSolicitudesPorRevisar() {
+        List<Solicitud> solicitudes = new ArrayList<>();
+        String sql = "SELECT s.id, s.fecha_solicitud, p.nombre AS perfil, s.estado " +
+                     "FROM solicitudes s " +
+                     "JOIN solicitudes_perfiles sp ON s.id = sp.id_solicitud " +
+                     "JOIN perfiles p ON sp.id_perfil = p.id " +
+                     "WHERE s.estado = 'por revisar'";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Solicitud solicitud = new Solicitud();
+                solicitud.setId(rs.getInt("id"));
+                solicitud.setFechaSolicitud(rs.getDate("fecha_solicitud"));
+                solicitud.setPerfil(rs.getString("perfil"));
+                solicitud.setEstado(rs.getString("estado"));
+                solicitudes.add(solicitud);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return solicitudes;
+    }
+
+    public boolean cambiarEstadoSolicitud(int idSolicitud, String nuevoEstado) {
+        String sql = "UPDATE solicitudes SET estado = ? WHERE id = ?";
+
+        try (Connection conn = ConexionDB.getConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nuevoEstado);
+            stmt.setInt(2, idSolicitud);
+
+            int filasActualizadas = stmt.executeUpdate();
+            return filasActualizadas > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package controller;
 import java.util.List;
 import model.DetalleSolicitud;
 import model.Perfil;
+import model.Solicitud;
 import model.SolicitudPerfil;
 import model.SolicitudPersonal;
 import model.Usuarios;
@@ -89,6 +90,13 @@ public class SolicitudController {
     public boolean registrarPostulacion(int postulanteId, int solicitudId) {
         return solicitudService.registrarPostulacion(postulanteId, solicitudId);
     }
+    
+     public List<Solicitud> obtenerSolicitudesPorRevisar() {
+        return solicitudService.obtenerSolicitudesPorRevisar();
+    }
 
+    public boolean cambiarEstadoSolicitud(int idSolicitud, String nuevoEstado) {
+        return solicitudService.cambiarEstadoSolicitud(idSolicitud, nuevoEstado);
+    }
     
 }

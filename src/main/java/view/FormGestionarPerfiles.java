@@ -4,6 +4,7 @@ import controller.PerfilController;
 import model.Perfil;
 import model.Usuarios;
 import util.SessionManager;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -68,11 +69,13 @@ public class FormGestionarPerfiles extends JFrame {
         JButton btnModificar = new JButton("Modificar");
         JButton btnEliminar = new JButton("Eliminar");
         JButton btnCerrar = new JButton("Cerrar");
+        JButton btnEvaluarSolicitudes = new JButton("Evaluar Solicitudes");
 
         panelBotones.add(btnAgregar);
         panelBotones.add(btnModificar);
         panelBotones.add(btnEliminar);
         panelBotones.add(btnCerrar);
+        panelBotones.add(btnEvaluarSolicitudes);
 
         panel.add(panelBotones, BorderLayout.SOUTH);
 
@@ -101,6 +104,7 @@ public class FormGestionarPerfiles extends JFrame {
         btnModificar.addActionListener(e -> modificarPerfil());
         btnEliminar.addActionListener(e -> eliminarPerfil());
         btnCerrar.addActionListener(e -> dispose());
+        btnEvaluarSolicitudes.addActionListener(e -> evaluarSolicitudes());
 
         tblPerfiles.getSelectionModel().addListSelectionListener(e -> seleccionarPerfil());
     }
@@ -182,5 +186,10 @@ public class FormGestionarPerfiles extends JFrame {
             txtId.setText(String.valueOf(id));
             txtNombre.setText(nombre);
         }
+    }
+
+    private void evaluarSolicitudes() {
+        EvaluarSolicitudesFormulario evaluarSolicitudesFormulario = new EvaluarSolicitudesFormulario(this, true);
+        evaluarSolicitudesFormulario.setVisible(true);
     }
 }

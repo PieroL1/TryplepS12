@@ -7,6 +7,7 @@ import dao.SolicitudesDAO;
 import java.util.List;
 import model.Usuarios;
 import model.Perfil;
+import model.Solicitud;
 import model.SolicitudPerfil;
 import model.SolicitudPersonal;
 
@@ -100,5 +101,13 @@ public class SolicitudesService {
 
     public boolean registrarPostulacion(int postulanteId, int solicitudId) {
         return solicitudesDAO.registrarPostulacion(postulanteId, solicitudId);
+    }
+    
+     public List<Solicitud> obtenerSolicitudesPorRevisar() {
+        return solicitudesDAO.obtenerSolicitudesPorRevisar();
+    }
+
+    public boolean cambiarEstadoSolicitud(int idSolicitud, String nuevoEstado) {
+        return solicitudesDAO.cambiarEstadoSolicitud(idSolicitud, nuevoEstado);
     }
 }

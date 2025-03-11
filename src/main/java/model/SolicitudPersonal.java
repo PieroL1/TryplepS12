@@ -32,7 +32,7 @@ public class SolicitudPersonal {
     public SolicitudPersonal() {
         this.detalles = new ArrayList<>();
         this.fechaRegistro = new Timestamp(System.currentTimeMillis());
-        this.estado = "PENDIENTE";
+        this.estado = "POR REVISAR";
     }
 
     // Constructor con parámetros
